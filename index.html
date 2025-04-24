@@ -1,0 +1,541 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html><html lang="en"><head>  <meta charset="UTF-8">  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Dirty Truths</title>  <style>
+  
+    body { font-family: Arial, sans-serif; padding: 1rem; background: #1e1e1e; color: #f1f1f1; }
+  
+    .container { max-width: 700px; margin: auto; }
+  
+    h1 { color: #ff4081; text-align: center; }
+  
+    .question-box { background: #333; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; }
+  
+    .buttons, .response { margin-top: 0.5rem; }
+  
+    button { background: #ff4081; color: white; border: none; padding: 0.5rem 1rem; margin: 0.2rem; border-radius: 5px; cursor: pointer; }
+  
+    input[type="text"], textarea { width: 100%; padding: 0.5rem; margin-top: 0.5rem; border-radius: 5px; border: none; resize: vertical; }
+  
+    .category-buttons { text-align: center; margin-bottom: 1rem; }
+  
+    .category-buttons button { margin: 0.5rem; }
+  
+  </style></head><body>  <div class="container"><h1>Dirty Truths</h1>
+
+
+
+<!-- Start Section -->
+
+<!-- Start Section -->
+
+<div id="start">  <p>Enter your name to begin:</p>  <input type="text" id="playerName" placeholder="Your Name"><button onclick="startQuiz()" style="margin-top: 1rem;">Start</button>
+
+</div><!-- Category Selection Section -->
+
+<div id="categorySelection" style="display:none;">
+
+  <div class="category-buttons">
+
+    <button onclick="chooseCategory('simple')">Simple Questions</button>
+
+    <button onclick="chooseCategory('sexy')">Sexy Questions</button>
+
+    <button onclick="chooseCategory('dark')">Dark Questions</button>
+
+    <button onclick="chooseCategory('taboo')">Taboo Questions</button>
+
+  </div>
+
+</div>
+
+
+
+<!-- Quiz Section -->
+
+<div id="quiz" style="display:none;">
+
+  <div class="question-box">
+
+    <p id="question"></p>
+
+    <div class="buttons">
+
+      <button onclick="submitAnswer('Yes')">Yes</button>
+
+      <button onclick="submitAnswer('No')">No</button>
+
+    </div>
+
+    <div class="response">
+
+      <label for="why">Tell me more about your choice of answer? (optional)</label>
+
+      <textarea id="why" placeholder="Explain your answer if you want..."></textarea>
+
+<br><br>
+
+<button onclick="stopQuiz()" style="background-color: #007BFF; color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer;">Stop Quiz</button>
+
+</div></div>
+
+  </div>
+
+</div>
+
+  </div>  <script>
+  
+    const questions = {
+  
+      simple: [
+  
+        "Would you ever kiss a stranger on a first date?",
+  
+        "Would you go on a blind date set up by your friends?",
+  
+        "Have you ever had a crush on someone you just met?",
+  
+        "Would you tell your partner if you had feelings for someone else?",
+  
+        "Would you sleep in the same bed with a friend of the opposite sex?",
+  
+        "Would you go on a vacation with a friend of the opposite sex alone?",
+  
+        "Would you share intimate details of your life with your best friend?",
+  
+        "Would you flirt with someone to get a free drink at a bar?",
+  
+        "Would you ever tell someone you loved them if you didn't mean it?",
+  
+        "Would you date someone you didn't find physically attractive just for their personality?",
+  
+        "Would you get into a relationship with someone even if your friends didn't approve?",
+  
+        "Would you ever try online dating?",
+  
+        "Would you go on a date with someone older than you?",
+  
+        "Would you take your partner on a surprise romantic date?",
+  
+        "Would you go on a blind date if it was set up by your parents?",
+  
+        "Would you ever consider dating a coworker?",
+  
+        "Would you cheat on your partner if you weren't emotionally connected anymore?",
+  
+        "Would you accept a date with someone you weren't attracted to?",
+  
+        "Would you hold hands in public with a partner?",
+  
+        "Would you kiss a friend just to see how it feels?",
+  
+        "Would you sleep with someone you didn't love?",
+  
+        "Would you tell a friend if you liked their significant other?",
+  
+        "Would you leave your partner if you were no longer in love?",
+  
+        "Would you lie to protect a friend's feelings?",
+  
+        "Would you date someone who is not your usual type?",
+  
+        "Would you date a person you met through social media?",
+  
+        "Would you go on a spontaneous date with someone you just met?",
+  
+        "Would you tell a lie to avoid hurting someone's feelings?",
+  
+        "Would you introduce your partner to your family after a few months of dating?",
+  
+        "Would you meet someone from a dating app in real life?",
+  
+        "Would you consider being friends with someone you've had feelings for in the past?",
+  
+        "Would you ever have a secret relationship?",
+  
+        "Would you accept a proposal from someone if you weren't sure about your feelings?",
+  
+        "Would you ever fake an orgasm during sex?",
+  
+        "Would you ever tell your partner you were not satisfied with the sex?",
+  
+        "Would you ever go out on a date with someone you were not initially attracted to?",
+  
+        "Would you ever date someone significantly older or younger than you?",
+  
+        "Would you hide a relationship from your friends?",
+  
+        "Would you ever date someone from a different cultural background?",
+  
+        "Would you consider a long-distance relationship?",
+  
+        "Would you ever date someone you met at a party?",
+  
+        "Would you prefer to date someone with similar hobbies and interests to yours?",
+  
+        "Would you go on a road trip with a partner to discover new places together?",
+  
+        "Would you ever consider dating someone who's already been married?",
+  
+        "Would you tell your partner about a crush you had on someone else?",
+  
+        "Would you go on a vacation with someone you just started dating?",
+  
+        "Would you consider dating someone with children?",
+  
+        "Would you tell your partner everything about your past relationships?",
+  
+        "Would you tell a lie to avoid a confrontation?",
+  
+        "Would you change your habits to make your partner happy?"
+  
+      ],
+  
+      sexy: [
+  
+        "Would you ever try a sexy dance for your partner?",
+  
+        "Would you enjoy sending intimate text messages to your partner?",
+  
+        "Would you ever try role-playing a fantasy with your partner?",
+  
+        "Would you be willing to engage in sexy phone calls?",
+  
+        "Would you ever wear lingerie for your partner?",
+  
+        "Would you try to seduce someone just for fun?",
+  
+        "Would you enjoy receiving a striptease from your partner?",
+  
+        "Would you try sex in a new location just for the excitement?",
+  
+        "Would you be comfortable kissing your partner in public?",
+  
+        "Would you ever experiment with different types of kissing?",
+  
+        "Would you let your partner blindfold you during sex?",
+  
+        "Would you enjoy a surprise sexy date planned by your partner?",
+  
+        "Would you participate in a sexy dare game with your partner?",
+  
+        "Would you send intimate photos to your partner if they asked?",
+  
+        "Would you enjoy being dominant in the bedroom?",
+  
+        "Would you try out a new sexual position with your partner?",
+  
+        "Would you allow your partner to pick a fantasy to try out?",
+  
+        "Would you try different types of foreplay?",
+  
+        "Would you let your partner tie you up during sex?",
+  
+        "Would you ever wear a sexy outfit for your partner?",
+  
+        "Would you go on a romantic weekend getaway with your partner?",
+  
+        "Would you allow your partner to watch you get ready for a date?",
+  
+        "Would you ever experiment with erotic massage?",
+  
+        "Would you enjoy having a sexy roleplay with your partner?",
+  
+        "Would you send a flirty text to your partner just for fun?",
+  
+        "Would you experiment with food during sex?",
+  
+        "Would you like to try watching adult films with your partner?",
+  
+        "Would you be interested in taking a sensual bath together?",
+  
+        "Would you ever try mutual masturbation with your partner?",
+  
+        "Would you be open to talking dirty during sex?",
+  
+        "Would you like to experiment with BDSM?",
+  
+        "Would you engage in a threesome with your partner's consent?",
+  
+        "Would you try public sex in a semi-private place?",
+  
+        "Would you explore your partner's sexual fantasies?",
+  
+        "Would you be comfortable sexting your partner?",
+  
+        "Would you consider sex toys in your relationship?",
+  
+        "Would you be turned on if your partner watched adult videos?",
+  
+        "Would you try bondage with your partner?",
+  
+        "Would you like to try tantric sex?",
+  
+        "Would you roleplay as strangers with your partner?",
+  
+        "Would you consider a sensual massage class for couples?",
+  
+        "Would you try spontaneous sex in the shower?",
+  
+        "Would you ever perform a strip tease for your partner?",
+  
+        "Would you try watching an adult film together for inspiration?",
+  
+        "Would you have sex outdoors if it was private enough?",
+  
+        "Would you ever try using a vibrator during sex?"
+  
+      ],
+  
+      dark: [
+  
+        "Would you ever cheat on your partner if you knew they wouldn't find out?",
+  
+        "Would you consider having sex with a stranger in a hotel room?",
+  
+        "Would you ever watch your partner have sex with someone else?",
+  
+        "Would you consider engaging in a sexual encounter with a person much older than you?",
+  
+        "Would you ever pay for sex if the opportunity arose?",
+  
+        "Would you enjoy a sexual encounter where you were completely submissive?",
+  
+        "Would you consider a taboo affair with someone who's already married?",
+  
+        "Would you be open to having sex in a dark, secluded area with no one else around?",
+  
+        "Would you allow your partner to dominate you in a sexual relationship?",
+  
+        "Would you try an affair just to get back at your partner?",
+  
+        "Would you consider sleeping with a coworker if you knew you could keep it secret?",
+  
+        "Would you cheat on your partner if you were no longer emotionally connected?",
+  
+        "Would you ever consider a one-night stand with a complete stranger?",
+  
+        "Would you want to experiment with a stranger in a secret location?",
+  
+        "Would you try a secret sexual relationship outside of your marriage?",
+  
+        "Would you let your partner explore sexual activities with others?",
+  
+        "Would you have a sexual relationship with someone your partner doesn't like?",
+  
+        "Would you ever meet someone secretly for a sexual encounter?",
+  
+        "Would you participate in a taboo roleplay involving cheating?",
+  
+        "Would you be open to exploring BDSM with a partner outside your relationship?",
+  
+        "Would you watch an adult film together with your partner if they suggested it?",
+  
+        "Would you be turned on by your partner telling you their sexual fantasies?",
+  
+        "Would you let someone else control your sexual pleasure?",
+  
+        "Would you enjoy being tied up and left helpless during sex?",
+  
+        "Would you consider sexual encounters involving power dynamics like dominance and submission?",
+  
+        "Would you try sex in a place where you could be caught by others?",
+  
+        "Would you hook up with a friend's spouse if the opportunity presented itself?",
+  
+        "Would you enjoy being forced into a sexual situation?",
+  
+        "Would you sleep with someone who was significantly more attractive than your partner?",
+  
+        "Would you ever engage in public nudity for the thrill of it?",
+  
+        "Would you cheat on your partner just to see how they would react?",
+  
+        "Would you consider having sex in a location that could be easily discovered?"
+  
+      ],
+  
+      taboo: [
+  
+        "Would you consider having sex with a person your partner dislikes?",
+  
+        "Would you cheat on your partner if you were never going to be caught?",
+  
+        "Would you explore a sexual relationship with someone much older than you?",
+  
+        "Would you engage in a taboo affair with a friend's spouse?",
+  
+        "Would you ever want to explore incest fantasies?",
+  
+        "Would you be comfortable with your partner exploring sexual encounters with others?",
+  
+        "Would you ever have sex with someone in your family just for the thrill?",
+  
+        "Would you hook up with a friend of your kid's school teacher?",
+  
+        "Would you try anal sex with a partner?",
+  
+        "Would you explore sexual fetishes that are not socially accepted?",
+  
+        "Would you enjoy having sex with a stranger at a secret location?",
+  
+        "Would you like to roleplay as strangers during sex?",
+  
+        "Would you watch a sex tape involving your partner with someone else?",
+  
+        "Would you consider having sex in public just to be caught?",
+  
+        "Would you cheat with someone your partner finds unattractive to make them jealous?",
+  
+        "Would you sleep with a professional escort to fulfill a fantasy?",
+  
+        "Would you ever sleep with someone you're not physically attracted to?",
+  
+        "Would you pay for sex if your partner agreed?",
+  
+        "Would you be okay with your partner having a casual hookup with a stranger?",
+  
+        "Would you ever engage in a sexual act to make your partner jealous?",
+  
+        "Would you have sex in a place where you might get caught?",
+  
+        "Would you enjoy a sexual encounter that could be dangerous or risky?",
+  
+        "Would you consider having sex with a total stranger you just met?",
+  
+        "Would you ever try to seduce someone much younger than you?",
+  
+        "Would you cheat on your partner to make yourself feel more desirable?",
+  
+        "Would you ever sleep with a friend's parent just for the thrill?",
+  
+        "Would you have sex with someone of the same sex if you were curious?",
+  
+        "Would you allow a complete stranger to touch you sexually?",
+  
+        "Would you try to seduce someone's partner just for the challenge?"
+  
+      ]
+  
+    };
+  
+
+  
+    let currentQuestionIndex = 0;
+  
+    let answers = [];
+  
+    let name = '';
+  
+    let selectedCategory = '';
+  
+
+  
+    function shuffle(array) {
+  
+      for (let i = array.length - 1; i > 0; i--) {
+  
+        const j = Math.floor(Math.random() * (i + 1));
+  
+        [array[i], array[j]] = [array[j], array[i]];
+  
+      }
+  
+      return array;
+  
+    }
+  
+
+  
+    function startQuiz() {
+  
+      name = document.getElementById('playerName').value.trim().toLowerCase();
+  
+      if (!name) return alert('Please enter a name.');
+  
+      document.getElementById('start').style.display = 'none';
+  
+      document.getElementById('categorySelection').style.display = 'block';
+  
+    }
+  
+
+  
+    function chooseCategory(category) {
+  
+      selectedCategory = category;
+  
+      shuffle(questions[selectedCategory]);
+  
+      document.getElementById('categorySelection').style.display = 'none';
+  
+      document.getElementById('quiz').style.display = 'block';
+  
+      showQuestion();
+  
+    }
+  
+
+  
+    function showQuestion() {
+  
+      if (currentQuestionIndex >= questions[selectedCategory].length) {
+  
+        finishQuiz();
+  
+        return;
+  
+      }
+  
+      document.getElementById('question').innerText = questions[selectedCategory][currentQuestionIndex];
+  
+      document.getElementById('why').value = '';
+  
+    }
+  
+
+  
+    function submitAnswer(answer) {
+  
+      const explanation = document.getElementById('why').value;
+  
+      answers.push({ question: questions[selectedCategory][currentQuestionIndex], answer, explanation });
+  
+      currentQuestionIndex++;
+  
+      showQuestion();
+  
+    }
+  
+
+  
+    function finishQuiz() {
+  
+      let recipient = name === 'atul' ? 'nupurgahoi89@gmail.com' : name === 'nupur' ? 'atulfromlko@gmail.com' : null;
+  
+      let subject = `Dirty Truths - ${name}`;
+  
+      let body = answers.map(a => `Q: ${a.question}\nA: ${a.answer}\nWhy: ${a.explanation || 'N/A'}\n`).join('\n');
+  
+      if (recipient) {
+  
+        window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  
+      } else {
+  
+        alert('Quiz finished. No email sent because name is not Atul or Nupur.');
+  
+      }
+  
+    }
+  
+function stopQuiz() {
+  
+  if (confirm("Are you sure you want to stop the quiz? All submitted answers will be sent.")) {
+  
+    finishQuiz();
+  
+  }
+  
+}
+  
+
+  
+  </script></body></html>
